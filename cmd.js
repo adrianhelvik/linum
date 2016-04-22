@@ -1,43 +1,31 @@
-#!/usr/bin/env node
-
-var file = process.argv[2];
-var line = process.argv[3];
 var fs = require('fs');
-var linum = require('./index');
+var colors = require('colors');
+var pad = require('pad');
 
-if (! file) {
-    var data = '';
-    var i = 0;
+var fn = process.argv[2];
+var stream;
 
-    process.stdin.on('readable', () => {
-        var chunk = process.stdin.read();
-        if (chunk !== null) {
-            linum(chunk.toString(), null, (err, data) => {
-                if (err) {
-                    console.log('Could not read data');
-                    process.exit(1);
-                }
-
-                process.stdout.write(data);
-            });
-        }
-    });
-
-    process.stdin.on('end', () => {
-        console.log('end');
-    });
+if (fn) {
+    stream = fs.createReadStream(fn)
+} else {
+    stream = process.stdin;
 }
 
-else {
-    fs.readFile(file, 'utf8', (err, data) => {
-        if (err)
-            return console.log('Could not read file');
+stream.setEncoding('utf8');
 
-        linum(data, line, (err, data) => {
-            if (err)
-                return console.log('Could not read file');
+var lineNumber = 0;
+var result = '';
 
-            console.log(data);
-        });
+stream.on('data', (chunk) => {
+    var split = chunk.split('\n');
+
+    split.forEach((value) => {
+        result += colors.blue(pad(lineNumber++ + ': ')) + value + '\n';
     });
-}
+
+    result = result.substring(0, result.length - 1);
+});
+
+stream.on('end', () => {
+    console.log(result);
+});
