@@ -1,21 +1,15 @@
 var colors = require('colors');
-var fs = require('fs');
 var pad = require('pad');
 
-module.exports = function(fileName, line, callback) {
-    fs.readFile(fileName, 'utf8', (err, data) => {
-        if (err)
-            return callback(err);
+module.exports = function(data, line, callback) {
+    var split = data.split('\n');
 
-        var split = data.split('\n');
+    var padLen = (split.length + '').length;
 
-        var padLen = (split.length + '').length;
+    split = split.map((item, idx) => colors.yellow(pad(padLen, ''+idx)) + ': ' + item);
 
-        split = split.map((item, idx) => colors.yellow(pad(padLen, ''+idx)) + ': ' + item);
+    if (line != null)
+        return callback(null, split[line]);
 
-        if (line != null)
-            return callback(null, split[line]);
-
-        callback(null, split.join('\n'));
-    });
+    callback(null, split.join('\n'));
 }

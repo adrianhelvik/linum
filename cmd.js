@@ -2,16 +2,42 @@
 
 var file = process.argv[2];
 var line = process.argv[3];
+var fs = require('fs');
 var linum = require('./index');
 
 if (! file) {
-    console.log('No file specified');
-    process.exit(1);
+    var data = '';
+    var i = 0;
+
+    process.stdin.on('readable', () => {
+        var chunk = process.stdin.read();
+        if (chunk !== null) {
+            linum(chunk.toString(), null, (err, data) => {
+                if (err) {
+                    console.log('Could not read data');
+                    process.exit(1);
+                }
+
+                process.stdout.write(data);
+            });
+        }
+    });
+
+    process.stdin.on('end', () => {
+        console.log('end');
+    });
 }
 
-linum(file, line, (err, data) => {
-    if (err)
-        return console.log('Could not read file');
+else {
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (err)
+            return console.log('Could not read file');
 
-    console.log(data);
-});
+        linum(data, line, (err, data) => {
+            if (err)
+                return console.log('Could not read file');
+
+            console.log(data);
+        });
+    });
+}
