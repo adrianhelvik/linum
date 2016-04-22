@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var file = process.argv[2];
+var line = process.argv[3];
 var linum = require('./index');
 
 if (! file) {
@@ -8,7 +9,7 @@ if (! file) {
     process.exit(1);
 }
 
-linum(file, (err, data) => {
+linum(file, line, (err, data) => {
     if (err)
         return console.log('Could not read file');
 
