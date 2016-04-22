@@ -1,8 +1,8 @@
 {
   "name": "linum",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
-  "main": "index.js",
+  "main": "cmd.js",
   "bin": {
     "linum": "cmd.js"
   },
@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "colors": "^1.1.2",
-    "pad": "^1.0.0"
+    "colors": "^1.1.2"
   }
 }

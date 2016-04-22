@@ -1,6 +1,6 @@
 var fs = require('fs');
 var colors = require('colors');
-var pad = require('pad');
+var pad = require('./pad');
 
 var fn = process.argv[2];
 var stream;
@@ -20,7 +20,7 @@ stream.on('data', (chunk) => {
     var split = chunk.split('\n');
 
     split.forEach((value) => {
-        result += colors.blue(pad(lineNumber++ + ': ')) + value + '\n';
+        result += colors.blue(pad(lineNumber++ + ': ', 5)) + value + '\n';
     });
 
     result = result.substring(0, result.length - 1);
@@ -29,3 +29,7 @@ stream.on('data', (chunk) => {
 stream.on('end', () => {
     console.log(result);
 });
+
+module.exports = function () {
+    throw new Error('This package should be installed/used globally');
+};

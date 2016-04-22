@@ -10,7 +10,7 @@ module.exports = function() {
     if (typeof arguments[0] == 'number' && typeof arguments[1] == 'number')
         throw new Error('Both arguments can not be a number')
 
-    if (typeof arguments[0] == 'number') {
+    else if (typeof arguments[0] == 'number') {
         idx = arguments[0];
         str = arguments[1];
 
@@ -30,16 +30,19 @@ module.exports = function() {
     // Argument parsing done
 
     for (let i = str.length; i < idx; i++) {
+
         if (padDirection == LEFT) {
             str = ' ' + str;
         }
+
         else if (padDirection == RIGHT) {
             str = str + ' ';
         }
-    }
 
-    else {
-        throw new Error('Coding error. Left or right not chosen. Notify developer.');
+        else {
+            throw new Error('Coding error. Left or right not chosen. Notify developer.');
+        }
+
     }
 
     return str;
